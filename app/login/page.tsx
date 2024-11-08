@@ -1,7 +1,15 @@
 import Image from "next/image";
 import { Button } from "../_components/ui/button";
 import { LogInIcon } from "lucide-react";
-const LoginPage = () => {
+import { SignInButton } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+
+const LoginPage = async () => {
+  const { userId } = await auth();
+  if (userId) {
+    redirect("/");
+  }
   return (
     <div className="grid h-full grid-cols-2">
       {/*ESQUERDA */}
@@ -15,9 +23,11 @@ const LoginPage = () => {
         />
         <h1 className="mb-3 text-4xl font-bold">Bem Vindo</h1>
         <p className="text-muted-foreground mb-8">Paragrafo de texto bobeira</p>
-        <Button variant="outline">
-          <LogInIcon className="mr-2" /> Fazer Login
-        </Button>
+        <SignInButton>
+          <Button variant="outline">
+            <LogInIcon className="mr-2" /> Fazer Login
+          </Button>
+        </SignInButton>
       </div>
       {/* DIREITA*/}
       <div className="relative h-full w-full">
