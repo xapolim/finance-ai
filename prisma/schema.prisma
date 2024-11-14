@@ -22,7 +22,8 @@ model Transaction {
   paymentMethod TransactionPaymentMethod
   date          DateTime
   createdAt     DateTime                 @default(now())
-  updateAt      DateTime                 @updatedAt
+  updatedAt     DateTime                 @updatedAt
+  userId        String
 }
 
 enum TransactionType {
@@ -35,12 +36,20 @@ enum TransactionCategory {
   HOUSING
   TRANSPORTATION
   FOOD
-  ENTERTEINAMENT
+  ENTERTAINMENT
   HEALTH
+  UTILITY
+  SALARY
+  EDUCATION
+  OTHER
 }
 
 enum TransactionPaymentMethod {
   CREDIT_CARD
   DEBIT_CARD
   BANK_TRANSFER
+  BANK_SLIP
+  CASH
+  PIX
+  OTHER
 }
