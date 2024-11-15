@@ -1,6 +1,5 @@
 import Navbar from "../_components/navbar";
 import TimeSelect from "./_components/time-select";
-import LastTransactions from "./_components/last-transactions";
 import { canUserAddTransaction } from "../_data/can-user-add-transaction";
 import { getDashboardGeral } from "../_data/get-dashboard-geral";
 import SummaryCardsGeral from "./_components/summary-cards-geral";
@@ -31,7 +30,6 @@ const Dashboard = async () => {
               />*/}
             </div>
           </div>
-          <LastTransactions lastTransactions={dashboard.lastTransactions} />
         </div>
       </div>
     </>

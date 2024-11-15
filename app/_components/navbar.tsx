@@ -52,6 +52,16 @@ const Navbar = () => {
         >
           Assinatura
         </Link>
+        <Link
+          href="/configs"
+          className={
+            pathname === "/configs"
+              ? "font-bold text-primary"
+              : "text-muted-foreground"
+          }
+        >
+          Configurações
+        </Link>
       </div>
       {/* DIREITA */}
       <UserButton showName />
