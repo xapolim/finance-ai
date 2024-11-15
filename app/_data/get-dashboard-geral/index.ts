@@ -2,26 +2,11 @@ import { db } from "@/app/_lib/prisma";
 import { TransactionType } from "@prisma/client";
 import { TotalExpensePerCategory, TransactionPercentagePerType } from "./types";
 
-export const getDashboard = async (month: string) => {
-  const where = {
-    date: {
-      gte: new Date(`2024-${month}-01`),
-      lt: new Date(`2024-${month}-31`),
-    },
-  };
-
+export const getDashboardGeral = async () => {
   const depositsTotal = Number(
     (
       await db.transaction.aggregate({
-        where: { ...where, type: "DEPOSIT" },
-        _sum: { amount: true },
-      })
-    )?._sum?.amount,
-  );
-  const depositsTotalGeral = Number(
-    (
-      await db.transaction.aggregate({
-        where: { ...where, type: "DEPOSIT" },
+        where: { type: "DEPOSIT" },
         _sum: { amount: true },
       })
     )?._sum?.amount,
@@ -29,7 +14,7 @@ export const getDashboard = async (month: string) => {
   const investmentsTotal = Number(
     (
       await db.transaction.aggregate({
-        where: { ...where, type: "INVESTMENT" },
+        where: { type: "INVESTMENT" },
         _sum: { amount: true },
       })
     )?._sum?.amount,
@@ -37,17 +22,16 @@ export const getDashboard = async (month: string) => {
   const expensesTotal = Number(
     (
       await db.transaction.aggregate({
-        where: { ...where, type: "EXPENSE" },
+        where: { type: "EXPENSE" },
         _sum: { amount: true },
       })
     )?._sum?.amount,
   );
   const balance = depositsTotal - investmentsTotal - expensesTotal;
-  const balanceGeral = depositsTotalGeral - investmentsTotal - expensesTotal;
+  const balanceGeral = depositsTotal - investmentsTotal - expensesTotal;
   const transactionsTotal = Number(
     (
       await db.transaction.aggregate({
-        where,
         _sum: { amount: true },
       })
     )._sum.amount,
@@ -67,7 +51,6 @@ export const getDashboard = async (month: string) => {
     await db.transaction.groupBy({
       by: ["category"],
       where: {
-        ...where,
         type: TransactionType.EXPENSE,
       },
       _sum: {
@@ -82,7 +65,6 @@ export const getDashboard = async (month: string) => {
     ),
   }));
   const lastTransactions = await db.transaction.findMany({
-    where,
     orderBy: { date: "desc" },
     take: 15,
   });

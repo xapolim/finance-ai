@@ -23,6 +23,16 @@ const Navbar = () => {
           Dashboard
         </Link>
         <Link
+          href="/dashboard-general"
+          className={
+            pathname === "//dashboard-general"
+              ? "font-bold text-primary"
+              : "text-muted-foreground"
+          }
+        >
+          Geral
+        </Link>
+        <Link
           href="/transactions"
           className={
             pathname === "/transactions"
