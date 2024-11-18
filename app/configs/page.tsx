@@ -1,28 +1,23 @@
-"use client";
-import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
 import Navbar from "../_components/navbar";
-import { usePathname } from "next/navigation";
-import AddTransactionButton from "../_components/config-salary";
+import ConfigSalaryButton from "./_components/config-salary-button";
+import { redirect } from "next/navigation";
 
-const ConfigPage = () => {
-  const pathname = usePathname();
+const ConfigPage = async () => {
+  const { userId } = await auth();
+  if (!userId) {
+    redirect("/login");
+  }
   return (
     <>
       <Navbar />
-      <div className="space-y-6 p-6">
+      <div className="space-y-2 p-6">
         <h1 className="text-2xl font-bold">Configurar Salário</h1>
-
-        <Link
-          href="#"
-          className={
-            pathname === "/"
-              ? "text-id font-bold text-primary"
-              : "text-muted-foreground"
-          }
-        >
-          Configurar Salário
-        </Link>
-        <AddTransactionButton />
+        <p className="m-32">
+          {" "}
+          <ConfigSalaryButton userId={userId} />
+        </p>
+        {/**<AddTransactionButton /> */}
         <div className="flex gap-6"></div>
       </div>
     </>

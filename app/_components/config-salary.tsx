@@ -3,7 +3,7 @@
 import { ArrowDownUpIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState } from "react";
-import UpsertSalaryDialog from "./upsert-salary-dialog";
+import UpsertSalaryDialog from "../configs/_components/upsert-salary-dialog";
 import {
   Tooltip,
   TooltipContent,
