@@ -15,19 +15,17 @@ import { deleteTransaction } from "../_actions/delete-transaction";
 import { toast } from "sonner";
 
 interface DeleteTransactionButtonProps {
-  itemSalary: string;
+  id: string;
 }
 
-const DeleteTransactionButton = ({
-  itemSalary,
-}: DeleteTransactionButtonProps) => {
+const DeleteTransactionButton = ({ id }: DeleteTransactionButtonProps) => {
   const handleConfirmDeleteClick = async () => {
     try {
-      await deleteTransaction({ itemSalary });
+      await deleteTransaction({ id });
       toast.success("Linha deletada com sucesso!");
     } catch (error) {
       console.error(error);
-      toast.error("Ocorreu um erro ao deletar a linha.");
+      toast.error(`Ocorreu um erro ao deletar a linha. ${id}`);
     }
   };
   return (
@@ -40,7 +38,7 @@ const DeleteTransactionButton = ({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Você deseja realmente deletar essa transação?
+            Você deseja realmente deletar o item?{id}
           </AlertDialogTitle>
           <AlertDialogDescription>
             Essa ação não pode ser desfeita.
