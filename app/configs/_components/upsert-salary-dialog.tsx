@@ -28,17 +28,16 @@ import {
 } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { upsertTransaction } from "../../_actions/upsert-transaction";
-
-import SummaryCardSalary from "./summary-card";
-import { CalendarRange } from "lucide-react";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { DataTable } from "@/app/_components/ui/salary-table";
+import { SalaryItensColumns } from "./../_columns";
 
 interface UpsertSalaryDialogProps {
   isOpen: boolean;
   defaultValues?: FormSchema;
   transactionId?: string;
   setIsOpen: (isOpen: boolean) => void;
-  userId?: string;
+  salaryItens?: JSON;
 }
 
 const formSchema = z.object({
@@ -71,8 +70,7 @@ type FormSchema = z.infer<typeof formSchema>;
 const UpsertSalaryDialog = ({
   isOpen,
   defaultValues,
-  transactionId,
-  userId,
+  salaryItens,
   setIsOpen,
 }: UpsertSalaryDialogProps) => {
   const form = useForm<FormSchema>({
@@ -86,18 +84,6 @@ const UpsertSalaryDialog = ({
       type: TransactionType.EXPENSE,
     },
   });
-
-  const onSubmit = async (data: FormSchema) => {
-    try {
-      await upsertTransaction({ ...data, id: transactionId });
-      setIsOpen(false);
-      form.reset();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const isUpdate = Boolean(transactionId);
 
   return (
     <Dialog
@@ -115,12 +101,12 @@ const UpsertSalaryDialog = ({
           <DialogTitle>Configurar o Holerite</DialogTitle>
           <DialogDescription>
             Insira os itens abaixo conforme aparecem em seu contracheque
-            (Holerite)==={userId}
+            (Holerite)
           </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form className="space-y-4">
             <FormField
               control={form.control}
               name="name"
@@ -155,23 +141,19 @@ const UpsertSalaryDialog = ({
                 </FormItem>
               )}
             />
-
-            <SummaryCardSalary
-              icon={<CalendarRange size={16} />}
-              title=""
-              size="small"
-              userId={userId}
-            />
-
+            <ScrollArea>
+              <DataTable
+                columns={SalaryItensColumns}
+                data={JSON.parse(JSON.stringify(salaryItens))}
+              />
+            </ScrollArea>
             <DialogFooter>
               <DialogClose asChild>
                 <Button type="button" variant="outline">
                   Cancelar
                 </Button>
               </DialogClose>
-              <Button type="submit">
-                {isUpdate ? "aAtualizar" : "bAdicionar"}
-              </Button>
+              <Button type="submit">{"Salvar"}</Button>
             </DialogFooter>
           </form>
         </Form>

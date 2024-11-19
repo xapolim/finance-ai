@@ -6,9 +6,9 @@ import { PencilIcon } from "lucide-react";
 import { useState } from "react";
 
 interface ConfigSalaryButtonProps {
-  userId: string;
+  salaryItens?: JSON;
 }
-const ConfigSalaryButton = ({ userId }: ConfigSalaryButtonProps) => {
+const ConfigSalaryButton = ({ salaryItens }: ConfigSalaryButtonProps) => {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
   return (
@@ -25,7 +25,7 @@ const ConfigSalaryButton = ({ userId }: ConfigSalaryButtonProps) => {
       <UpsertSalaryDialog
         isOpen={dialogIsOpen}
         setIsOpen={setDialogIsOpen}
-        userId={userId}
+        salaryItens={salaryItens}
       />
     </>
   );

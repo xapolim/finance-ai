@@ -2,34 +2,29 @@
 
 import { SalaryTable } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
+import DeleteTransactionButton from "../_components/delete-transaction-button";
 
 export const SalaryItensColumns: ColumnDef<SalaryTable>[] = [
   {
-    accessorKey: "name",
-    header: "Nome",
+    accessorKey: "salaryItem",
+    header: "Resumo",
   },
 
   {
     accessorKey: "amount",
-    header: "Valor",
-    cell: ({ row: { original: SalaryTable } }) =>
-      new Intl.NumberFormat("pt-BR", {
+    header: "",
+    cell: ({ row: { original: SalaryTable } }) => {
+      const formatted = new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",
-      }).format(Number(SalaryTable.SalaryItemValue)),
-  },
-];
-{
-  /*{
-    accessorKey: "actions",
-    header: "Ações",
-    cell: ({ row: { original: transaction } }) => {
+      }).format(Number(SalaryTable.SalaryItemValue));
+
       return (
-        <div className="space-x-1">
-          <EditTransactionButton transaction={transaction} />
-          <DeleteTransactionButton transactionId={transaction.id} />
+        <div className="flex items-center justify-end">
+          <span className="font-medium">{formatted}</span>
+          <DeleteTransactionButton itemSalary={SalaryTable.id} />
         </div>
       );
     },
-  }, */
-}
+  },
+];

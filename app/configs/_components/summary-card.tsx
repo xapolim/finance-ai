@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader } from "@/app/_components/ui/card";
+
 import { CircleMinus } from "lucide-react";
 import { ReactNode } from "react";
 
@@ -6,14 +7,13 @@ interface SummaryCardProps {
   icon: ReactNode;
   title: string;
   size?: "small" | "large";
-  userId?: string;
+  salaryItens?: JSON;
 }
 
 const SummaryCardSalary = ({
   icon,
   title,
   size = "small",
-  userId,
 }: SummaryCardProps) => {
   return (
     <Card>
@@ -23,7 +23,7 @@ const SummaryCardSalary = ({
           className={`${size === "small" ? "text-muted-foreground" : "text-white opacity-70"}`}
         >
           {title}
-          {userId}
+          {}
         </p>
       </CardHeader>
       <CardContent className="flex justify-between">
@@ -53,7 +53,6 @@ const SummaryCardSalary = ({
           </p>
         </p>
       </CardContent>
-      <CardContent></CardContent>
     </Card>
   );
 };
