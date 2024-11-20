@@ -22,7 +22,7 @@ export const SalaryItensColumns: ColumnDef<SalaryTable>[] = [
       return (
         <div className="flex items-center justify-end">
           <span className="font-medium">{formatted}</span>
-          <DeleteTransactionButton id={SalaryTable.id} />
+          <DeleteTransactionButton id={SalaryTable.salaryItem} />
         </div>
       );
     },

@@ -27,6 +27,7 @@ import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { DataTable } from "@/app/_components/ui/salary-table";
 import { SalaryItensColumns } from "./../_columns";
 import InsertItemSalaryButton from "./insert-item-button";
+import React, { useState } from "react";
 
 interface UpsertSalaryDialogProps {
   isOpen: boolean;
@@ -64,7 +65,12 @@ const UpsertSalaryDialog = ({
       name: "",
     },
   });
-
+  const [valorSelecionado, setValorSelecionado] = useState("");
+  const handleChange = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setValorSelecionado(event.target.value);
+  };
   return (
     <Dialog
       open={isOpen}
@@ -121,6 +127,29 @@ const UpsertSalaryDialog = ({
                 </FormItem>
               )}
             />
+            <div>
+              <label className="p-4">
+                <input
+                  className="mr-2"
+                  type="radio"
+                  value="rendimento"
+                  checked={valorSelecionado === "rendimento"}
+                  onChange={handleChange}
+                />
+                Rendimento
+              </label>
+              <label className="p-4">
+                <input
+                  className="mr-2"
+                  type="radio"
+                  value="despesa"
+                  checked={valorSelecionado === "despesa"}
+                  onChange={handleChange}
+                  defaultChecked
+                />
+                Despesa
+              </label>
+            </div>
             <div className="relative flex items-center justify-end">
               <div className="... relative inset-y-0 right-0 flex">
                 <p className="flex gap-2">
@@ -130,11 +159,13 @@ const UpsertSalaryDialog = ({
                     }
                     salaryItem={form.watch("name")}
                     SalaryItemValue={form.watch("amount")}
+                    tipo={valorSelecionado}
                     onSuccess={() => form.reset()}
                   />
                 </p>
               </div>
             </div>
+
             <ScrollArea>
               <DataTable
                 columns={SalaryItensColumns}
