@@ -29,6 +29,7 @@ const InsertItemSalaryButton = ({
       if (tipo == "") {
         throw new Error("Escolha um tipo (Rendimento | Despesa)");
       }
+      if (tipo === "despesa") SalaryItemValue *= -1;
       await InsertItemSalary({ userId, salaryItem, SalaryItemValue });
       if (onSuccess) onSuccess();
       toast.success("Updated!");

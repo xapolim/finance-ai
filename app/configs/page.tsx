@@ -21,6 +21,7 @@ const ConfigPage = async () => {
             salaryItens={JSON.parse(JSON.stringify(salaryItens))}
           />
         </p>
+
         {/**<AddTransactionButton /> */}
         <div className="flex gap-6"></div>
       </div>

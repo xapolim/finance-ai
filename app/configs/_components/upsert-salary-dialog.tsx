@@ -34,20 +34,16 @@ interface UpsertSalaryDialogProps {
   defaultValues?: FormSchema;
   transactionId?: string;
   setIsOpen: (isOpen: boolean) => void;
-  salaryItens?: JSON;
+  salaryItens: number;
 }
 
 const formSchema = z.object({
   name: z.string().trim().min(1, {
     message: "O nome é obrigatório.",
   }),
-  amount: z
-    .number({
-      required_error: "O valor é obrigatório.",
-    })
-    .positive({
-      message: "O valor deve ser positivo.",
-    }),
+  amount: z.number({
+    required_error: "O valor é obrigatório.",
+  }),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -65,6 +61,32 @@ const UpsertSalaryDialog = ({
       name: "",
     },
   });
+
+  const bruto = salaryItens.reduce(
+    (accumulator, currentValue) =>
+      accumulator +
+      (Number(currentValue.SalaryItemValue) > 0
+        ? Number(currentValue.SalaryItemValue)
+        : 0),
+    0,
+  );
+  const desconto = salaryItens.reduce(
+    (accumulator, currentValue) =>
+      accumulator +
+      (Number(currentValue.SalaryItemValue) < 0
+        ? Number(currentValue.SalaryItemValue)
+        : 0),
+    0,
+  );
+  const liquido = salaryItens.reduce(
+    (accumulator, currentValue) =>
+      accumulator + Number(currentValue.SalaryItemValue),
+    0,
+  );
+  console.log(bruto);
+  console.log(desconto * -1);
+  console.log(liquido);
+
   const [valorSelecionado, setValorSelecionado] = useState("");
   const handleChange = (event: {
     target: { value: React.SetStateAction<string> };
@@ -87,7 +109,7 @@ const UpsertSalaryDialog = ({
           <DialogTitle>Configurar o Holerite</DialogTitle>
           <DialogDescription>
             Insira os itens abaixo conforme aparecem em seu contracheque
-            (Holerite){JSON.parse(JSON.stringify(salaryItens))[0]["userId"]}
+            (Holerite)---
           </DialogDescription>
         </DialogHeader>
 
@@ -145,7 +167,6 @@ const UpsertSalaryDialog = ({
                   value="despesa"
                   checked={valorSelecionado === "despesa"}
                   onChange={handleChange}
-                  defaultChecked
                 />
                 Despesa
               </label>
@@ -165,13 +186,23 @@ const UpsertSalaryDialog = ({
                 </p>
               </div>
             </div>
-
             <ScrollArea>
               <DataTable
                 columns={SalaryItensColumns}
                 data={JSON.parse(JSON.stringify(salaryItens))}
               />
             </ScrollArea>
+            <div className="flex justify-between">
+              <div className="text-green-400">
+                Bruto <p>R$ {bruto.toFixed(2)}</p>
+              </div>
+              <div className="text-red-400">
+                Desconto<p>R$ {(desconto * -1).toFixed(2)}</p>
+              </div>
+              <div className="text-blue-400">
+                Liquido<p>R$ {liquido.toFixed(2)}</p>
+              </div>
+            </div>
             <DialogFooter>
               <DialogClose asChild>
                 <Button type="button">Fechar</Button>

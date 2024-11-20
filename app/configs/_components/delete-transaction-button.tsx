@@ -25,7 +25,7 @@ const DeleteTransactionButton = ({ id }: DeleteTransactionButtonProps) => {
       toast.success("Linha deletada com sucesso!");
     } catch (error) {
       console.error(error);
-      toast.error(`Ocorreu um erro ao deletar a linha. ${id}`);
+      toast.error(`Ocorreu um erro ao deletar a linha.`);
     }
   };
   return (
@@ -38,7 +38,7 @@ const DeleteTransactionButton = ({ id }: DeleteTransactionButtonProps) => {
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Você deseja realmente deletar o item?{id}
+            Você deseja realmente deletar o item?
           </AlertDialogTitle>
           <AlertDialogDescription>
             Essa ação não pode ser desfeita.
